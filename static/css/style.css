@@ -1,59 +1,43 @@
 *{
-    padding:0px;
-    margin:0px;
+    margin: 0;
+    padding: 0;
 }
 /* --- menu --- */
 .menu {
     background-color: black;
     display: flex;
-    padding: 10px;
+}
+.menu li {
     list-style: none;
+    padding: 10px;
 }
 .menu a {
-    text-decoration: none;
     color: white;
+    text-decoration: none;
     padding: 5px 15px;
 }
-.menu a:hover{
-    background-color: rgb(120, 120, 120);
+.menu a:hover {
+    background-color: rgb(100,100,100);
 }
 
+/* --- main --- */
+
 /* --- logo --- */
-.logo{
+.logo {
     height: 650px;
-    background-image: url('../images/logo.jpg');
+    background-image: url('../images/aleksandr.jpg');
     background-size: cover;
     text-align: center;
 }
 .logo h1{
-    color: white;
+    color: rgb(255, 255, 255);
     font-size: 75px;
     padding-top: 140px;
 }
 .logo p{
-    color: white;
-    padding-top: 90px;
-    font-size:30px;
-}
-
-.logo h1{
-    color: white;
-    font-size: 70px;
-    padding-top: 140px;
-}
-.logo p{
-    padding-top: 90px;
-    font-size: 28px;
     color: rgb(255, 255, 255);
-    text-shadow: 2px 2px 2px black;
-}
-
-footer{
-    background-color: black;
-    color: white;
-    font-size: 15px;
-    text-align: center;
-    padding: 30px;
+    padding-top: 90px;
+    font-size: 30px;
 }
 
 .about{
@@ -64,4 +48,54 @@ footer{
     text-indent: 30px;
     text-align: justify;
     padding: 80px 30px;
+}
+
+/* --- articles --- */
+
+ .logo_articles{
+    height: 600px;
+    background-image: url('../images/tunel.jpg');
+    background-size: cover;
+    text-align: center;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    color: white;
+}
+.logo_atricles h1{
+    font-size: 60 px;
+    color: white;
+    text-shadow: 1px 1px 2px black;
+    text-transform: uppercase;
+}
+.link{
+    color: white;
+}
+
+/* --- Login --- */
+
+form{
+	margin: 50px;
+	font-size: 30px;
+	text-align: center;
+}
+input{
+	width: 400px;
+	font-size: 20px;
+}
+button{
+	background-color: black;
+	color: white;
+	font-size: 20px;
+	margin: 15px;
+	padding: 10px;
+}
+
+/* --- footer --- */
+footer{
+    background-color: black;
+    color: white;
+    font-size: 15px;
+    text-align: center;
+    padding: 30px;
 }
