@@ -1,3 +1,4 @@
+from crypt import methods
 from datetime import datetime
 from flask import Flask
 from flask import request
@@ -48,11 +49,9 @@ def index():
 
 @app.route('/articles')
 def articles():
-    new_articles = ['How to avoid expensive travel mistakes', 'Top 5 places to experience supernatural forces',
-                    'Three wonderfully bizarre Mexican festivals', 'The 20 greenest destinations on Earth',
-                    'How to survive on a desert island']
+    articles = Posts.query.all()
 
-    return render_template('articles.html', articles=new_articles)
+    return render_template('articles.html', articles=articles)
 
 
 @app.route('/add_post', methods=['GET'])
@@ -74,11 +73,26 @@ def add_post_form():
                 post_text=post_text,
                 post_image=post_image,
                 continent=continent)
+
     db.session.add(row)
     db.session.commit()
 
 
     return render_template('add_post.html')
+
+
+@app.route('/delete_post', methods=['GET', 'POST'])
+def delete_post():
+    if request.method == 'POST':
+        id_list = request.form.getlist('id')
+        for id in id_list:
+            row = Posts.query.filter_by(id=id).first()
+            db.session.delete()
+
+        db.session.commit()
+
+    articles = Posts.query.all()
+    render_template('delete_post.html', articles=articles)
 
 
 @app.route('/details')
