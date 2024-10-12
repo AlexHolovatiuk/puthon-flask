@@ -1,7 +1,6 @@
 from crypt import methods
 from datetime import datetime
-from flask import Flask
-from flask import request
+from flask import Flask, request, session, redirect
 from flask import render_template
 from flask_sqlalchemy import SQLAlchemy
 
@@ -14,6 +13,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'da
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
+app.secret_key = 'v8i7z10akmljj_evacptd0M09yrNi5i63ipAj3FL68E'
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -44,7 +44,8 @@ class Posts(db.Model):
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    x =session.get('username')
+    return render_template('index.html', username=x)
 
 
 @app.route('/articles')
@@ -56,6 +57,8 @@ def articles():
 
 @app.route('/add_post', methods=['GET'])
 def add_post():
+    if not session.get('username'):
+        return redirect('/login')
 
     # додаємо публікацібю
 
@@ -64,6 +67,9 @@ def add_post():
 
 @app.route('/add_post', methods=['POST'])
 def add_post_form():
+    if not session.get('username'):
+        return redirect('/login')
+
     post_name = request.form['text']
     post_text = request.form['text']
     post_image = request.form['URL']
@@ -83,6 +89,9 @@ def add_post_form():
 
 @app.route('/delete_post', methods=['GET', 'POST'])
 def delete_post():
+    if not session.get('username'):
+        return redirect('/login')
+
     if request.method == 'POST':
         id_list = request.form.getlist('id')
         for id in id_list:
@@ -100,11 +109,40 @@ def details():
     return render_template('details.html')
 
 
-@app.route('/login')
+@app.route('/login', methods=['GET'])
 def login():
     message = 'Enter you login and password'
     return render_template('login.html', message=message)
 
+
+@app.route('/login', methods=['POST'])
+def login_user():
+    email = request.form['email']
+    password = request.form['password']
+
+    user = User.query.filter_by(email=email).first()
+
+    if not user:
+        message = 'Enter correct email'
+        return render_template('login.html', message=message)
+    else:
+        if user.password != password:
+            message = 'Enter correct password'
+            return render_template('login.html', message=message)
+        else:
+            session['username'] = user.username
+
+            return redirect('/')
+            # return render_template('index.html')
+
+
+@app.route('/logout')
+def logout():
+    session.clear()
+
+        # session.pop.('username')
+
+    return redirect('/')
 
 
 @app.route('/about')
@@ -114,6 +152,10 @@ def about():
 
 @app.route('/add_user', methods=['GET', 'POST'])
 def add_user():
+    if not session.get('username'):
+        return redirect('/login')
+
+
     if request.method == 'POST':
         username = request.form['username']
         email = request.form['email']
